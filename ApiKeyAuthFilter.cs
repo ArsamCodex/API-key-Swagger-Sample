@@ -5,14 +5,14 @@ namespace authSwagger
 {
     public class ApiKeyAuthFilter : Attribute, IAuthorizationFilter
     {
-        /*
+        
         private readonly IConfiguration _configuration;
 
         public ApiKeyAuthFilter(IConfiguration configuration) {
             _configuration = configuration;
         }
 
-        */
+        
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             if (!context.HttpContext.Request.Headers.TryGetValue(AuthConstant.ApiKeyHeaderName, out var extractedAiKey))
@@ -20,8 +20,8 @@ namespace authSwagger
                 context.Result = new UnauthorizedObjectResult("Api Key Missing");
                 return;
             }
-            var config = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-            var apikey = config.GetValue<string>(AuthConstant.ApiKeySectionNme);
+          //  var config = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+            var apikey = _configuration.GetValue<string>(AuthConstant.ApiKeySectionNme);
 
             if (!apikey.Equals(extractedAiKey))
             {
